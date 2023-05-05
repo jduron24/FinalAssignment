@@ -17,12 +17,12 @@ function App() {
     price: 0.0,
     description: "",
     category: "",
-    image: "http://127.0.0.1:3000/images/",
+    image: "http://127.0.0.1:4000/images/",
     rating: { rate: 0.0, count: 0 },
   });
 
   function getAllProducts() {
-    fetch("http://localhost:3000/")
+    fetch("http://localhost:4000/")
       .then((response) => response.json())
       .then((data) => {
         console.log("Show Catalog of Products :");
@@ -41,7 +41,7 @@ function App() {
   function handleOnSubmit(e) {
     e.preventDefault();
     console.log(e.target.value);
-    fetch("http://localhost:3000/insert", {
+    fetch("http://localhost:4000/insert", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(addNewProduct),
@@ -89,7 +89,7 @@ function App() {
   function getOneProduct(id) {
     console.log(id);
     if (id >= 1 && id <= 20) {
-      fetch("http://localhost:3000/" + id)
+      fetch("http://localhost:4000/" + id)
         .then((response) => response.json())
         .then((data) => {
           console.log("Show one product :", id);
@@ -144,7 +144,7 @@ function App() {
   }
   function deleteOneProduct(deleteid) {
     console.log("Product to delete :", deleteid);
-    fetch("http://localhost:3000/delete/", {
+    fetch("http://localhost:4000/delete/", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ _id: deleteid }),
@@ -163,57 +163,102 @@ function App() {
   }
 
 
-
+  function doSomething(){
+    
+  }
   return (
-    <div className="App">
-      <h1>Catalog of Products</h1>
-      <button onClick={() => getAllProducts()}>Show All products</button>
+  <div id="font">
+  
+  {/* nav bar */}
+  <div class="topnav">
+  <a class="active" href="#home">Home</a>
+  <a href="">Products </a>
+  <a href="#contact">Credits</a>
+</div>
+{/* Nav bar ended */}
 
+
+    <div>
+      <h1 class="center">Catalog of Products</h1>
+    </div>
+      
+      <button  class="btn btn-primary" onClick={() => getAllProducts()}>Show All products</button>
       <input type="text" id="message" name="message" placeholder="id" onChange={(e) => getOneProduct(e.target.value)} />
+      
 
-      <h1>Show all available Products.</h1>
+      <h1 class="center">Show all available Products.</h1>
+      
+      <div class="center">
+
       <hr></hr>
       {viewer1 && <div>Products {showAllItems}</div>}
       <hr></hr>
-      <h1>Show one Product by Id:</h1>
+      <h1 font="id">Show one Product by Id:</h1>
       {viewer2 && <div>Product: {showOneItem}</div>}
       <hr></hr>
+      </div>
+
       <div>
-        <h3>Add a new product :</h3>
-        <form action="">
-          <input type="number" placeholder="id?" name="_id" value={addNewProduct._id} onChange={handleChange} />
-          <input type="text" placeholder="title?" name="title" value={addNewProduct.title} onChange={handleChange} />
-          <input type="number" placeholder="price?" name="price" value={addNewProduct.price} onChange={handleChange} />
-          <input type="text" placeholder="description?" name="description" value={addNewProduct.description} onChange={handleChange} />
-          <input type="text" placeholder="category?" name="category" value={addNewProduct.category} onChange={handleChange} />
-          <input type="text" placeholder="image?" name="image" value={addNewProduct.image} onChange={handleChange} />
-          <input type="number" placeholder="rate?" name="rate" value={addNewProduct.rating.rate} onChange={handleChange} />
-          <input type="number" placeholder="count?" name="count" value={addNewProduct.rating.count} onChange={handleChange} />
-          <button type="submit" onClick={handleOnSubmit}>
-            submit
-          </button>
-        </form>
+          <h3 id="font">Add a new product :</h3>
+          <form action="">
+          <div class="form-group">
+          <label>ID</label>
+              <input type="number" class="form-control" placeholder="id?" name="_id" value={addNewProduct._id} onChange={handleChange} />
+            </div>
+            <div class="form-group" >
+            <label>Title</label>
+              <input type="text" class="form-control" placeholder="title?" name="title" value={addNewProduct.title} onChange={handleChange} />
+            </div>
+            <div class="form-group">
+            <label>Price</label>
+              <input type="number" class="form-control" placeholder="price?" name="price" value={addNewProduct.price} onChange={handleChange} />
+            </div>
+            <div class="form-group">
+            <label>Description</label>
+              <input type="text"  class="form-control" placeholder="description?" name="description" value={addNewProduct.description} onChange={handleChange} />
+            </div>
+            <div class="form-group">
+            <label>Category</label>
+              <input type="text"  class="form-control" placeholder="category?" name="category" value={addNewProduct.category} onChange={handleChange} />
+            </div>
+
+            <div class="form-group">
+            <label>Image</label>
+              <input type="text" class="form-control" placeholder="image?" name="image" value={addNewProduct.image} onChange={handleChange} />
+            </div>
+            <div class="form-group">
+            <label>Rate</label>
+              <input type="number" class="form-control"  placeholder="rate?" name="rate" value={addNewProduct.rating.rate} onChange={handleChange} />
+            </div>
+            <div class="form-group">
+            <label>Count</label>
+              <input type="number" class="form-control" placeholder="count?" name="count" value={addNewProduct.rating.count} onChange={handleChange} />
+            </div>
+              <button className="btn btn-primary btn-lg mx-3 px-5 py-3 mt-2" type="submit" onClick={handleOnSubmit}>
+                  submit
+              </button>
+          </form>
       </div>
       <div>
-        <h3>Delete one product:</h3>
-        <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked4}
-          onChange={(e) => setChecked4(!checked4)} />
-        <button onClick={() => getOneByOneProductPrev()}>Prev</button>
-        <button onClick={() => getOneByOneProductNext()}>Next</button>
-        <button onClick={() => deleteOneProduct(product[index]._id)}>Delete</button>
-        {checked4 && (
-          <div key={product[index]._id}>
-            <img src={product[index].image} width={30} /> <br />
-            Id:{product[index]._id} <br />
-            Title: {product[index].title} <br />
-            Category: {product[index].category} <br />
-            Price: {product[index].price} <br />
-            Rate :{product[index].rating.rate} and Count:
-            {product[index].rating.count} <br />
-          </div>
-        )}
+          <h3>Delete one product:</h3>
+          <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked4}
+              onChange={(e) => setChecked4(!checked4)} />
+          <button onClick={() => getOneByOneProductPrev()}>Prev</button>
+          <button onClick={() => getOneByOneProductNext()}>Next</button>
+          <button className="btn btn-dark btn-lg mx-3 px-5 py-3 mt-2" onClick={() => deleteOneProduct(product[index]._id)}>Delete</button>
+          {checked4 && (
+              <div key={product[index]._id}>
+                  <img src={product[index].image} width={30} /> <br />
+                  Id:{product[index]._id} <br />
+                  Title: {product[index].title} <br />
+                  Category: {product[index].category} <br />
+                  Price: {product[index].price} <br />
+                  Rate :{product[index].rating.rate} and Count:
+                  {product[index].rating.count} <br />
+              </div>
+          )}
       </div>
-    </div>
+  </div>
   );
 }
 
