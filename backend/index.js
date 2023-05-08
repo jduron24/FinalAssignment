@@ -21,12 +21,16 @@ mongoose.connect("mongodb://127.0.0.1:27017/reactdata",
 const port = process.env.PORT || 4000;
 const host = "localhost";
 
+
+
 app.get("/", async (req, resp) => {
     const query = {};
     const allProducts = await Product.find(query);
     console.log(allProducts);
     resp.send(allProducts);
 });
+
+
 
 app.post("/insert", async (req, res) => {
     console.log(req.body);
@@ -73,6 +77,21 @@ app.get("/:id", async (req, resp) => {
     resp.send(oneProduct);
 });
 
+app.put("/update", async (req, res) => {
+    try {
+      const updatedProduct = req.body;
+      const query = { _id: updatedProduct._id };
+      await Product.findOneAndUpdate(query, updatedProduct, { new: true });
+      const messageResponse = {
+        message: `Product ${updatedProduct._id} updated correctly`,
+      };
+      res.send(JSON.stringify(messageResponse));
+    } catch (err) {
+      console.log("Error while updating product: " + err);
+    }
+  });
+  
+  
 
 app.delete("/delete", async (req, res) => {
     console.log("Delete :", req.body);
@@ -87,3 +106,8 @@ app.delete("/delete", async (req, res) => {
     console.log("Error while deleting :" + p_id + " " + err);
     }
     });
+
+
+
+
+

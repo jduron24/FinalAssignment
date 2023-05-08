@@ -9,6 +9,11 @@ function App() {
   const [viewer4, setViewer4] = useState(false);
   const [checked4, setChecked4] = useState(false);
   const [index, setIndex] = useState(0);
+  const [checked5, setChecked5] = useState(false);
+  const [checked6, setChecked6] = useState(false);
+  const [checkedCredits, setCheckedCredits] = useState(false);
+  
+  const [updatedProduct, setUpdatedProduct] = useState({});
 
 
   const [addNewProduct, setAddNewProduct] = useState({
@@ -124,7 +129,7 @@ function App() {
 
   useEffect(() => {
     getAllProducts();
-  }, [checked4]);
+  }, [checked4], [checked5]);
 
   function getOneByOneProductNext() {
     if (product.length > 0) {
@@ -162,9 +167,24 @@ function App() {
     setChecked4(!checked4);
   }
 
+ function handleUpdateProduct(e) {
 
-  function doSomething(){
-    
+    e.preventDefault();
+    fetch("http://localhost:4000/update", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedProduct),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Update product completed");
+        console.log(data);
+        if (data) {
+          const value = Object.values(data);
+          alert(value);
+        }
+      });
+      setChecked5(!checked5);
   }
   return (
   <div id="font">
@@ -172,8 +192,15 @@ function App() {
   {/* nav bar */}
   <div class="topnav">
   <a class="active" href="#home">Home</a>
-  <a href="">Products </a>
-  <a href="#contact">Credits</a>
+  <a href="">Products 
+  <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked6}
+                onChange={(e) => setChecked6(!checked6)}/></a>
+  <a href="#contact">Credits <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checkedCredits}
+                onChange={(e) => setCheckedCredits(!checkedCredits)} /></a>
+  <a href="">Delete <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked4}
+              onChange={(e) => setChecked4(!checked4)} /> </a>
+  <a href="">Update <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked5}
+                onChange={(e) => setChecked5(!checked5)} /></a>
 </div>
 {/* Nav bar ended */}
 
@@ -181,25 +208,26 @@ function App() {
     <div>
       <h1 class="center">Catalog of Products</h1>
     </div>
-      
-      <button  class="btn btn-primary" onClick={() => getAllProducts()}>Show All products</button>
+            
+      <div class="center">
+     
+      </div>
+  
+      <div>
+          {checked6 && (
+            <div>
+              <button  class="btn btn-primary" onClick={() => getAllProducts()}>Show All products</button>
       <input type="text" id="message" name="message" placeholder="id" onChange={(e) => getOneProduct(e.target.value)} />
       
 
       <h1 class="center">Show all available Products.</h1>
-      
-      <div class="center">
-
       <hr></hr>
       {viewer1 && <div>Products {showAllItems}</div>}
       <hr></hr>
       <h1 font="id">Show one Product by Id:</h1>
       {viewer2 && <div>Product: {showOneItem}</div>}
       <hr></hr>
-      </div>
-
-      <div>
-          <h3 id="font">Add a new product :</h3>
+            <h3 id="font">Add a new product :</h3>
           <form action="">
           <div class="form-group">
           <label>ID</label>
@@ -238,15 +266,19 @@ function App() {
                   submit
               </button>
           </form>
-      </div>
+          </div>
+          )}
+          </div>
       <div>
-          <h3>Delete one product:</h3>
-          <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked4}
-              onChange={(e) => setChecked4(!checked4)} />
-          <button onClick={() => getOneByOneProductPrev()}>Prev</button>
-          <button onClick={() => getOneByOneProductNext()}>Next</button>
-          <button className="btn btn-dark btn-lg mx-3 px-5 py-3 mt-2" onClick={() => deleteOneProduct(product[index]._id)}>Delete</button>
+          
           {checked4 && (
+            <div>
+            <h3>Delete one product:</h3>
+          
+            <button onClick={() => getOneByOneProductPrev()}>Prev</button>
+            <button onClick={() => getOneByOneProductNext()}>Next</button>
+            <button className="btn btn-dark btn-lg mx-3 px-5 py-3 mt-2" onClick={() => deleteOneProduct(product[index]._id)}>Delete</button>
+            
               <div key={product[index]._id}>
                   <img src={product[index].image} width={30} /> <br />
                   Id:{product[index]._id} <br />
@@ -256,8 +288,61 @@ function App() {
                   Rate :{product[index].rating.rate} and Count:
                   {product[index].rating.count} <br />
               </div>
+              </div>
           )}
       </div>
+      <div>
+        
+        {checked5 && (
+          <div>
+      <h3>update an item, click checkbox to open menu</h3>
+
+          <h3 style={{ marginTop: '20px' }}>Edit an Item:</h3>
+          <form key={updatedProduct._id} onSubmit={handleUpdateProduct}>
+            <input type="text" name="_id" placeholder="ID" value={updatedProduct._id || ''} onChange={(e) => setUpdatedProduct({ ...updatedProduct, _id: e.target.value })} style={{ width: '15%', height: '40px' }} />
+
+            <input type="text" name="title" placeholder="title" value={updatedProduct.title || ''} onChange={(e) => setUpdatedProduct({ ...updatedProduct, title: e.target.value })} style={{ width: '15%', height: '40px' }} />
+
+            <input type="number" name="price" placeholder="price" value={updatedProduct.price || ''} onChange={(e) => setUpdatedProduct({ ...updatedProduct, price: e.target.value })} style={{ width: '15%', height: '40px' }} />
+
+            <input type="text" name="description" placeholder="description" value={updatedProduct.description || ''} onChange={(e) => setUpdatedProduct({ ...updatedProduct, description: e.target.value })} style={{ width: '15%', height: '40px' }} />
+
+            <input type="text" name="category" placeholder="category" value={updatedProduct.category || ''} onChange={(e) => setUpdatedProduct({ ...updatedProduct, category: e.target.value })} style={{ width: '15%', height: '40px' }} />
+
+            <input type="text" name="image" placeholder="image url" value={updatedProduct.image || ''} onChange={(e) => setUpdatedProduct({ ...updatedProduct, image: e.target.value })} style={{ width: '15%', height: '40px' }} />
+
+            <input type="number" name="rate" placeholder="rating" value={updatedProduct.rating?.rate || ''} onChange={(e) => setUpdatedProduct({ ...updatedProduct, rating: { ...updatedProduct.rating, rate: e.target.value } })} style={{ width: '15%', height: '40px' }} />
+
+            <input type="number" name="count" placeholder="# of ratings" value={updatedProduct.rating?.count || ''} onChange={(e) => setUpdatedProduct({ ...updatedProduct, rating: { ...updatedProduct.rating, count: e.target.value } })} style={{ width: '15%', height: '40px' }} />
+            <button type="submit" onClick={handleUpdateProduct}>Update Item</button>
+          </form>
+        </div>
+        )}
+        </div>
+        
+        
+
+        {checkedCredits && (
+          <div>
+          <h3>Credits, Click checkbox to show</h3>
+        <p>
+            Credits:
+            <br></br>
+            COMS319
+            <br></br>
+            05/06/2023
+            <br></br>
+            Jon Duron: jduron24@isu.edu
+            <br></br>
+            Will Griner: willyg@iastate.edu
+            <br></br>
+            Dr. Abraham N. Aldaco Gastelum
+            <br></br>
+
+          </p>
+          </div>
+        )}
+
   </div>
   );
 }
