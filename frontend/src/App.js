@@ -186,42 +186,77 @@ function App() {
       });
       setChecked5(!checked5);
   }
+
+
+//   function initMap() {
+//     let iowaState = { lat:  42.02846678849032, lng: -93.6508728711652 }; 
+//     // creates a new google maps object
+//     let map = new google.maps.Map(
+//         // was initially getELementById, if cannot get to work later, change map from a class to an id
+//         document.getElementById('map'), { zoom: 17, center: iowaState } // zoom == zoom level, zoom 0 is the lowest. center == 
+//     )
+//     let marker = new google.maps.Marker({ position: iowaState, map: map })
+
+// }
+
   return (
   <div id="font">
   
   {/* nav bar */}
   <div class="topnav">
   <a class="active" href="#home">Home</a>
-  <a href="">Products 
-  <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked6}
-                onChange={(e) => setChecked6(!checked6)}/></a>
-  <a href="#contact">Credits <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checkedCredits}
-                onChange={(e) => setCheckedCredits(!checkedCredits)} /></a>
-  <a href="">Delete <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked4}
-              onChange={(e) => setChecked4(!checked4)} /> </a>
-  <a href="">Update <input type="checkbox" id="acceptdelete" name="acceptdelete" checked={checked5}
-                onChange={(e) => setChecked5(!checked5)} /></a>
+  <button class="button"checked={checked6}
+                onClick={(e) => setChecked6(!checked6)} >Product</button>
+  <button class="button" checked={checkedCredits}
+                onClick={(e) => setCheckedCredits(!checkedCredits)}> Credits</button>
+  <button class="button" checked={checked4}
+              onClick={(e) => setChecked4(!checked4)}> Delete</button>
+  <button  class="button" checked={checked5}
+                onClick={(e) => setChecked5(!checked5)}>Update</button>
 </div>
 {/* Nav bar ended */}
 
 
-    <div>
-      <h1 class="center">Catalog of Products</h1>
-    </div>
-            
-      <div class="center">
-     
-      </div>
-  
       <div>
+        {!checked6 && !checked4 && !checked6 && !checked5 && !checkedCredits && (
+          <div>
+            <h1 class="center">Catalog of Products</h1>
+            <h2 class="header">Our Store</h2>
+            <div class="container">
+              <p class="CalculatorUse">Our website aims to help drivers make informed decisions about their speed while
+                traveling
+                from one place to another. By inputting your starting point, destination, and the amount you
+                plan to exceed the speed limit, our website can calculate how much time you would save compared
+                to following the speed limit. <br></br>
+              </p>
+
+              {/* <div id="map">
+                
+                <div class="calculatedNumbers">
+                    <p>hey</p>
+                </div>
+            </div> */}
+
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div class="center">
+
+      </div>
+
+          <div>
           {checked6 && (
+            
             <div>
-              <button  class="btn btn-primary" onClick={() => getAllProducts()}>Show All products</button>
+              <button  class="btn btn-primary" onClick={() => getAllProducts() }>Show All products</button>
       <input type="text" id="message" name="message" placeholder="id" onChange={(e) => getOneProduct(e.target.value)} />
       
 
       <h1 class="center">Show all available Products.</h1>
       <hr></hr>
+      
       {viewer1 && <div>Products {showAllItems}</div>}
       <hr></hr>
       <h1 font="id">Show one Product by Id:</h1>
@@ -269,6 +304,8 @@ function App() {
           </div>
           )}
           </div>
+          
+          
       <div>
           
           {checked4 && (
@@ -342,6 +379,8 @@ function App() {
           </p>
           </div>
         )}
+        {/* <script src="./App.js">  </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGLaDL46KgWIre9tVEGgX1MJtPOuu8bTQ&callback=initMap"> </script> */}
 
   </div>
   );

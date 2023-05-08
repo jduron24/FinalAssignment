@@ -83,3 +83,32 @@
   background-color: #04AA6D;
   color: white;
 }
+
+.button{
+  background-color:#7fafa2 ;
+  border: #141b19;
+  display: inline-block;
+  padding: 14.5px 30px;
+}
+.header{
+  padding-left: 120px;
+}
+.container{
+  width: 800px;
+}
+#map{
+  z-index: 1;
+  margin-top: 60px;
+  margin-left: 80px;
+  margin-right: 500px;
+  background-color: rgb(197, 197, 197);
+  block-size: 400px;
+  border-radius: 50px;
+  border-style: dashed;
+  /* block-size: auto; */
+  }
+  .calculatedNumbers{
+    z-index: 2;
+    font-size: 20px;
+    
+}
