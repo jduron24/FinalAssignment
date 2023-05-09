@@ -1,5 +1,8 @@
 import './App.css';
+import { useMemo} from "react";
 import { useState, useEffect } from "react";
+
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 function App() {
   const [product, setProduct] = useState([]);
@@ -188,31 +191,34 @@ function App() {
   }
 
 
-//   function initMap() {
-//     let iowaState = { lat:  42.02846678849032, lng: -93.6508728711652 }; 
-//     // creates a new google maps object
-//     let map = new google.maps.Map(
-//         // was initially getELementById, if cannot get to work later, change map from a class to an id
-//         document.getElementById('map'), { zoom: 17, center: iowaState } // zoom == zoom level, zoom 0 is the lowest. center == 
-//     )
-//     let marker = new google.maps.Marker({ position: iowaState, map: map })
+// init map start
+function Home(){
+  const {isLoaded} = useLoadScript({ 
+    googleMapsApiKey: "AIzaSyCGLaDL46KgWIre9tVEGgX1MJtPOuu8bTQ"
+});
+if(!isLoaded) return <div>Loading ... </div>
+return <Map />
+}
 
-// }
+function Map(){
+  return <GoogleMap zoom={10} center={{lat:44, lng:-69}} mapContainerClassName="map"> </GoogleMap>
+}
+
 
   return (
   <div id="font">
   
   {/* nav bar */}
   <div class="topnav">
-  <a class="active" href="#home">Home</a>
+  <button class="button" onClick={(e) => {setChecked6(false); setChecked5(false); setChecked4(false);setCheckedCredits(false)}}>Home</button>
   <button class="button"checked={checked6}
-                onClick={(e) => setChecked6(!checked6)} >Product</button>
+                onClick={(e) => {setChecked6(!checked6); setChecked5(false); setChecked4(false);setCheckedCredits(false)}} >Product</button>
   <button class="button" checked={checkedCredits}
-                onClick={(e) => setCheckedCredits(!checkedCredits)}> Credits</button>
+                onClick={(e) => {setCheckedCredits(!checkedCredits);setChecked6(false); setChecked5(false); setChecked4(false);}}> Credits</button>
   <button class="button" checked={checked4}
-              onClick={(e) => setChecked4(!checked4)}> Delete</button>
+              onClick={(e) => {setChecked4(!checked4); setCheckedCredits(false);setChecked6(false);setChecked5(false)}}> Delete</button>
   <button  class="button" checked={checked5}
-                onClick={(e) => setChecked5(!checked5)}>Update</button>
+                onClick={(e) => {setChecked5(!checked5); setCheckedCredits(false); setChecked4(false);setChecked6(false);}}>Update</button>
 </div>
 {/* Nav bar ended */}
 
@@ -229,14 +235,11 @@ function App() {
                 plan to exceed the speed limit, our website can calculate how much time you would save compared
                 to following the speed limit. <br></br>
               </p>
+              <div className='map'>
+               {Home}
 
-              {/* <div id="map">
-                
-                <div class="calculatedNumbers">
-                    <p>hey</p>
-                </div>
-            </div> */}
 
+              </div>
             </div>
           </div>
         )}
@@ -379,8 +382,8 @@ function App() {
           </p>
           </div>
         )}
-        {/* <script src="./App.js">  </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGLaDL46KgWIre9tVEGgX1MJtPOuu8bTQ&callback=initMap"> </script> */}
+        <script src="./App.js">  </script>
+   
 
   </div>
   );

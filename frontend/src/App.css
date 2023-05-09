@@ -96,7 +96,7 @@
 .container{
   width: 800px;
 }
-#map{
+.map{
   z-index: 1;
   margin-top: 60px;
   margin-left: 80px;
